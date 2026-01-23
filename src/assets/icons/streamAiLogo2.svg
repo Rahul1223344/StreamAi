@@ -1,0 +1,26 @@
+<svg width="500" height="200" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .netflix-font {
+      fill: #E50914;
+      font-family: "Arial Black", "Arial Bold", sans-serif;
+      font-size: 85px;
+      font-weight: 900;
+      letter-spacing: -4px;
+      text-transform: none;
+    }
+  </style>
+
+  <defs>
+    <clipPath id="netflixArc">
+      <path d="M 0,0 L 500,0 L 500,150 Q 250,120 0,150 Z" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#netflixArc)">
+    <text x="250" y="140" text-anchor="middle" class="netflix-font">
+      StreamA<tspan fill="#E50914">i</tspan>
+    </text>
+  </g>
+  
+  <circle cx="418" cy="78" r="7" fill="#E50914" />
+</svg>
