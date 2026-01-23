@@ -1,14 +1,21 @@
 import './App.css'
+import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import Login from './pages/Login'
+import Home from './pages/Home'
+
+const router = createBrowserRouter([{
+  path : "/",
+  element : <Login/>
+},{
+  path : "/home" ,
+  element : <Home/>
+}
+])
 
 function App() {
-
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-slate-900">
-      <h1 className="text-4xl font-bold text-white ">
-        Tailwind is working
-      </h1>
-    </div>
+    <RouterProvider router={router} /> 
     </>
   )
 }
