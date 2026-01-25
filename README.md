@@ -4,6 +4,10 @@
  - Tailwind
  - React Svg
  - Header
+ - SignIn and SignUp Form 
+ - Firebase Initialisation
+ - Firebase Authenticate
+ - Redux Setup
 
 
 
