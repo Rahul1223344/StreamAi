@@ -1,28 +1,19 @@
-import { initializeApp,} from "firebase/app"
-import type {FirebaseApp} from "firebase/app"
-import { getAnalytics } from "firebase/analytics"
-import type {Analytics} from "firebase/analytics"
-import { getAuth } from "firebase/auth"
-import type {Auth} from "firebase/auth"
+import { initializeApp, type FirebaseApp } from 'firebase/app'
+import { getAuth, GoogleAuthProvider, type Auth } from 'firebase/auth'
 
-// Firebase configuration type is inferred automatically
+// Firebase configuration with typed env variables
 const firebaseConfig = {
-  apiKey: "AIzaSyA6E1KI3Jh9OYtHjiv7sxpWc6NVqPxs0sg",
-  authDomain: "streamai-f94d3.firebaseapp.com",
-  projectId: "streamai-f94d3",
-  storageBucket: "streamai-f94d3.firebasestorage.app",
-  messagingSenderId: "848660019618",
-  appId: "1:848660019618:web:c79509dda2f48ae1961afb",
-  measurementId: "G-KESDQJ65VY"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID as string,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET as string,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID as string,
 }
 
 // Initialize Firebase
 const app: FirebaseApp = initializeApp(firebaseConfig)
-
-// Analytics (safe for browser environments)
-const analytics: Analytics = getAnalytics(app)
-
-// Firebase Authentication
 const auth: Auth = getAuth(app)
 
 export { app, auth }
+export const provider = new GoogleAuthProvider()

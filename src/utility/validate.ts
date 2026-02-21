@@ -1,30 +1,18 @@
-interface FormData {
-  email: string
-  pass: string
-  userName?: string
+export const checkValidData = (
+  email: string,
+  password: string
+): string | null => {
+  const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
+    email
+  )
+
+  const isPasswordValid =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+      password
+    )
+
+  if (!isEmailValid) return 'Email ID is not valid'
+  if (!isPasswordValid) return 'Password is not valid'
+
+  return null
 }
-
-const validate = (formData: FormData): string => {
-  let errors: string = ""
-
-  // Email validation
-  if (!formData.email) {
-    errors = "Email is required"
-  } else if (
-    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
-  ) {
-    errors = "Invalid email address"
-  }
-
-  // Password validation
-  if (!formData.pass) {
-    errors = "Password is required"
-  } else if (formData.pass.length < 6) {
-    errors = "Password must be at least 6 characters"
-  }
-
-  return errors
-}
-
-export default validate
-
