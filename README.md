@@ -8,6 +8,10 @@
  - Firebase Initialisation
  - Firebase Authenticate
  - Redux Setup
+ - User Added in Redux
+ - HeroIcon Added
+ - TMDB setup completed
+ - Movies Added in redux
 
 
 

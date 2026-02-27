@@ -70,11 +70,11 @@ const Form: React.FC = () => {
           }),
         )
 
-        navigate('/')
+        navigate('/home')
       } else {
         // SIGN IN
         await signInWithEmailAndPassword(auth, email, password)
-        navigate('/')
+        navigate('/home')
       }
     } catch (error: any) {
       setErrorMessage(`${error.code} ${error.message}`)
