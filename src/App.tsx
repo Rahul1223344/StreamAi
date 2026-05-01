@@ -5,7 +5,8 @@ import Home from './pages/Home'
 import appStore from './utility/appStore'
 import { Provider } from 'react-redux'
 import type { ReactElement } from 'react'
-
+import MovieDetails from './pages/MoviesDetails'
+import ProtectedRoute from './components/ProtectedRoute'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -13,7 +14,14 @@ const router = createBrowserRouter([
   },
   {
     path: '/home',
-    element: <Home />,
+    element: <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>,
+  },
+  { path: '/movie/:id',
+    element:<ProtectedRoute> 
+              <MovieDetails /> 
+           </ProtectedRoute>
   },
 ])
 

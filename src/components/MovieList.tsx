@@ -32,10 +32,11 @@ const MovieList = ({ title, movies }: MovieListProps): ReactElement | null => {
 
       <div className="flex gap-3 py-3 overflow-x-scroll no-scrollbar">
         {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            posterPath={movie.poster_path}
-          />
+          <MovieCard 
+           key={movie.id}
+           id={movie.id} 
+           posterPath={movie.poster_path} 
+           />
         ))}
       </div>
     </div>

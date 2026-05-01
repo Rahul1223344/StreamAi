@@ -1,3 +1,4 @@
+import AISearchModal from "../components/AISearchModal"
 import Header from "../components/Header"
 import MainContainer from "../components/MainContainer"
 import SecondaryContainer from "../components/SecondaryContainer"
@@ -15,6 +16,7 @@ const Home = () => {
        <Header />
        <MainContainer />
        <SecondaryContainer/>
+       <AISearchModal/>
     </div>
   )
 }
