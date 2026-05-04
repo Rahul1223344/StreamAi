@@ -5,13 +5,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
- type User,
+  type User,
+  signInWithPopup,
 } from 'firebase/auth'
-import { auth } from '../utility/firebase'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addUser } from '../utility/userSlice'
 import { USER_AVATAR } from '../utility/constant'
+import { auth, provider } from '../utility/firebase'
 
 const Form: React.FC = () => {
   const [isSignInForm, setIsSignInForm] = useState<boolean>(true)
@@ -41,7 +42,6 @@ const Form: React.FC = () => {
 
     try {
       if (!isSignInForm) {
-        // SIGN UP
         if (!nameRef.current) return
         const fullName = nameRef.current.value
 
@@ -61,18 +61,9 @@ const Form: React.FC = () => {
         const { uid, email: userEmail, displayName, photoURL } =
           auth.currentUser as User
 
-        dispatch(
-          addUser({
-            uid,
-            email: userEmail,
-            displayName,
-            photoURL,
-          }),
-        )
-
+        dispatch(addUser({ uid, email: userEmail, displayName, photoURL }))
         navigate('/home')
       } else {
-        // SIGN IN
         await signInWithEmailAndPassword(auth, email, password)
         navigate('/home')
       }
@@ -81,76 +72,145 @@ const Form: React.FC = () => {
     }
   }
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, provider)
+    } catch (error) {
+      console.error('Google Sign-In Error:', error)
+    }
+  }
+
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden">
+    <div className="relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden">
+      
       <Header />
 
-      {/* Background */}
+      {/* 🎬 Background */}
       <div className="absolute inset-0 -z-10">
         <img
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-30"
           src="https://assets.nflxext.com/ffe/siteui/vlv3/6d631aa6-567d-46ef-a644-b5b00e4334d2/web/IN-en-20251215-TRIFECTA-perspective_f1cab02a-e42b-4913-a7d9-c5fe0f94f68d_large.jpg"
-          alt="body"
+          alt="bg"
         />
+        <div className="absolute inset-0 bg-black/70" />
       </div>
 
-      {/* Form Wrapper */}
-      <div className="flex justify-center pt-20 sm:pt-24">
-        <form
-          onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}
-          className="text-white bg-black/80 w-full max-w-md mx-4 p-6 sm:p-8 rounded"
+      {/* 💎 Glass Card */}
+      <form
+        onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}
+        className="
+          w-full max-w-md mx-4
+          bg-black/60 backdrop-blur-md
+          p-8 rounded-xl
+          shadow-2xl border border-gray-700
+          text-white
+          hover:scale-[1.01] transition-transform
+        "
+      >
+        {/* 🧠 Title */}
+        <h1 className="text-3xl font-bold mb-6 text-center tracking-wide">
+          {isSignInForm ? 'Sign In' : 'Sign Up'}
+        </h1>
+
+        {/* 👤 Name */}
+        {!isSignInForm && (
+          <input
+            ref={nameRef}
+            type="text"
+            placeholder="Full Name"
+            className="
+              w-full px-4 py-3 mb-4
+              bg-gray-800 rounded-md
+              outline-none text-white
+              focus:ring-2 focus:ring-red-500
+            "
+          />
+        )}
+
+        {/* 📧 Email */}
+        <input
+          ref={emailRef}
+          type="email"
+          placeholder="Email Address"
+          className="
+            w-full px-4 py-3 mb-4
+            bg-gray-800 rounded-md
+            outline-none text-white
+            focus:ring-2 focus:ring-red-500
+          "
+        />
+
+        {/* 🔒 Password */}
+        <input
+          ref={passwordRef}
+          type="password"
+          placeholder="Password"
+          className="
+            w-full px-4 py-3 mb-4
+            bg-gray-800 rounded-md
+            outline-none text-white
+            focus:ring-2 focus:ring-red-500
+          "
+        />
+
+        {/* ❌ Error */}
+        {errorMessage && (
+          <p className="text-red-500 text-sm mb-3">{errorMessage}</p>
+        )}
+
+        {/* 🔴 Main Button */}
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className="
+            w-full py-3 mt-2
+            bg-red-600 font-semibold
+            rounded-md
+            hover:bg-red-700 transition
+            shadow-lg
+          "
         >
-          <h1 className="font-bold text-2xl sm:text-3xl py-4">
-            {isSignInForm ? 'Sign In' : 'Sign Up'}
-          </h1>
+          {isSignInForm ? 'Sign In' : 'Sign Up'}
+        </button>
 
-          {!isSignInForm && (
-            <input
-              ref={nameRef}
-              type="text"
-              placeholder="Full Name"
-              className="p-3 my-3 sm:my-4 bg-gray-700 w-full rounded"
-            />
-          )}
+        {/* ➖ Divider */}
+        <div className="flex items-center my-5">
+          <div className="flex-1 h-px bg-gray-600" />
+          <span className="px-3 text-gray-400 text-sm">or</span>
+          <div className="flex-1 h-px bg-gray-600" />
+        </div>
 
-          <input
-            ref={emailRef}
-            type="email"
-            placeholder="Email Address"
-            className="p-3 my-3 sm:my-4 bg-gray-700 w-full rounded"
+        {/* 🔵 Google Button */}
+        <button
+          onClick={handleGoogleSignIn}
+          type="button"
+          className="
+            w-full py-3
+            bg-white text-black font-medium
+            rounded-md
+            hover:bg-gray-200 transition
+            flex items-center justify-center gap-3
+            shadow-md
+          "
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="google"
+            className="w-5 h-5"
           />
+          Continue with Google
+        </button>
 
-          <input
-            ref={passwordRef}
-            type="password"
-            placeholder="Password"
-            className="p-3 my-3 sm:my-4 bg-gray-700 w-full rounded"
-          />
-
-          {errorMessage && (
-            <p className="text-sm sm:text-base text-red-600 mt-2">
-              {errorMessage}
-            </p>
-          )}
-
-          <button
-            type="button"
-            className="bg-red-500 w-full p-3 my-5 sm:my-6 rounded hover:bg-red-600"
-            onClick={handleButtonClick}
-          >
-            {isSignInForm ? 'Sign In' : 'Sign Up'}
-          </button>
-
-          <p
-            onClick={toggleSignInForm}
-            className="cursor-pointer text-sm text-gray-300 hover:text-white"
-          >
-            {isSignInForm
-              ? 'New to Netflix? Sign Up Now'
-              : 'Already a User? Please Sign In'}
-          </p>
-        </form>
-      </div>
+        {/* 🔁 Toggle */}
+        <p
+          onClick={toggleSignInForm}
+          className="mt-6 text-sm text-gray-300 cursor-pointer text-center hover:text-white"
+        >
+          {isSignInForm
+            ? 'New to StreamAI? Sign Up Now'
+            : 'Already a user? Sign In'}
+        </p>
+      </form>
     </div>
   )
 }
